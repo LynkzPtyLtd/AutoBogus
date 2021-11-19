@@ -17,6 +17,7 @@ namespace AutoBogus
       GenerateName = GenerateContext.GenerateName;
       Faker = GenerateContext.Faker;
       RuleSets = GenerateContext.RuleSets;
+      Rules = GenerateContext.Rules;
     }
 
     /// <summary>
@@ -28,7 +29,7 @@ namespace AutoBogus
     /// The type associated with the current generate request.
     /// </summary>
     public Type GenerateType { get; }
-    
+
     /// <summary>
     /// The name associated with the current generate request.
     /// </summary>
@@ -43,8 +44,12 @@ namespace AutoBogus
     /// The requested rule sets provided for the generate request.
     /// </summary>
     public IEnumerable<string> RuleSets { get; }
-       
-    internal AutoGenerateContext GenerateContext { get; }    
+
+    /// <summary>
+    /// The AutoBogus rules for the generate request.
+    /// </summary>
+    public IReadOnlyDictionary<Type, RuleBuilder> Rules { get; }
+
+    internal AutoGenerateContext GenerateContext { get; }
   }
 }
-

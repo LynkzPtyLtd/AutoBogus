@@ -116,5 +116,12 @@ namespace AutoBogus
     /// <param name="generatorOverride">The <see cref="AutoGeneratorOverride"/> instance to use.</param>
     /// <returns>The current configuration builder instance.</returns>
     TBuilder WithOverride(AutoGeneratorOverride generatorOverride);
+
+    /// <summary>
+    /// Registers a collection of rules to use when generating values of a specific type.
+    /// </summary>
+    /// <param name="ruleBuilder">The <see cref="RuleBuilder"/> instance used to create the rules.</param>
+    /// <returns>The current configuration builder instance.</returns>
+    TBuilder WithRulesFor<TType>(Action<RuleBuilder<TType>> ruleBuilder);
   }
 }

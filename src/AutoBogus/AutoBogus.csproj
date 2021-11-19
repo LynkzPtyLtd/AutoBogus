@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net40;net452;netstandard1.3;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net48;netstandard2.0</TargetFrameworks>
     <Description>A C# library complementing the Bogus generator by adding auto creation and population capabilities.</Description>
     <Version>2.13.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -37,6 +37,10 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
 

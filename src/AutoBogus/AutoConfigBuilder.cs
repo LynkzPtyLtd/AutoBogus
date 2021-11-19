@@ -1,5 +1,6 @@
 using Bogus;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AutoBogus
@@ -16,6 +17,8 @@ namespace AutoBogus
 
     internal object[] Args { get; private set; }
 
+    private readonly Dictionary<Type, RuleBuilder> Rules = new();
+
     IAutoFakerDefaultConfigBuilder IAutoConfigBuilder<IAutoFakerDefaultConfigBuilder>.WithLocale(string locale) => WithLocale<IAutoFakerDefaultConfigBuilder>(locale, this);
     IAutoFakerDefaultConfigBuilder IAutoConfigBuilder<IAutoFakerDefaultConfigBuilder>.WithRepeatCount(int count) => WithRepeatCount<IAutoFakerDefaultConfigBuilder>(context => count, this);
     IAutoFakerDefaultConfigBuilder IAutoConfigBuilder<IAutoFakerDefaultConfigBuilder>.WithRepeatCount(Func<AutoGenerateContext, int> count) => WithRepeatCount<IAutoFakerDefaultConfigBuilder>(count, this);
@@ -31,7 +34,9 @@ namespace AutoBogus
     IAutoFakerDefaultConfigBuilder IAutoConfigBuilder<IAutoFakerDefaultConfigBuilder>.WithSkip(Type type, string memberName) => WithSkip<IAutoFakerDefaultConfigBuilder>(type, memberName, this);
     IAutoFakerDefaultConfigBuilder IAutoConfigBuilder<IAutoFakerDefaultConfigBuilder>.WithSkip<TType>(string memberName) => WithSkip<IAutoFakerDefaultConfigBuilder, TType>(memberName, this);
     IAutoFakerDefaultConfigBuilder IAutoConfigBuilder<IAutoFakerDefaultConfigBuilder>.WithOverride(AutoGeneratorOverride generatorOverride) => WithOverride<IAutoFakerDefaultConfigBuilder>(generatorOverride, this);
-    
+    IAutoFakerConfigBuilder IAutoConfigBuilder<IAutoFakerConfigBuilder>.WithRulesFor<TType>(Action<RuleBuilder<TType>> ruleBuilder) => WithRulesFor<IAutoFakerConfigBuilder, TType>(ruleBuilder, this);
+    IAutoGenerateConfigBuilder IAutoConfigBuilder<IAutoGenerateConfigBuilder>.WithRulesFor<TType>(Action<RuleBuilder<TType>> ruleBuilder) => WithRulesFor<IAutoGenerateConfigBuilder, TType>(ruleBuilder, this);
+    IAutoFakerDefaultConfigBuilder IAutoConfigBuilder<IAutoFakerDefaultConfigBuilder>.WithRulesFor<TType>(Action<RuleBuilder<TType>> ruleBuilder) => WithRulesFor<IAutoFakerDefaultConfigBuilder, TType>(ruleBuilder, this);
     IAutoGenerateConfigBuilder IAutoConfigBuilder<IAutoGenerateConfigBuilder>.WithLocale(string locale) => WithLocale<IAutoGenerateConfigBuilder>(locale, this);
     IAutoGenerateConfigBuilder IAutoConfigBuilder<IAutoGenerateConfigBuilder>.WithRepeatCount(int count) => WithRepeatCount<IAutoGenerateConfigBuilder>(context => count, this);
     IAutoGenerateConfigBuilder IAutoConfigBuilder<IAutoGenerateConfigBuilder>.WithRepeatCount(Func<AutoGenerateContext, int> count) => WithRepeatCount<IAutoGenerateConfigBuilder>(count, this);
@@ -158,6 +163,19 @@ namespace AutoBogus
     internal TBuilder WithArgs<TBuilder>(object[] args, TBuilder builder)
     {
       Args = args;
+      return builder;
+    }
+
+    internal TBuilder WithRulesFor<TBuilder, TType>(Action<RuleBuilder<TType>> ruleBuilder, TBuilder builder)
+    {
+      Config.Rules = Rules;
+      if (!Rules.TryGetValue(typeof(TType), out var existingBuilder))
+      {
+        existingBuilder = new RuleBuilder<TType>();
+        Rules.Add(typeof(TType), existingBuilder);
+      }
+
+      ruleBuilder?.Invoke(existingBuilder as RuleBuilder<TType>);
       return builder;
     }
   }

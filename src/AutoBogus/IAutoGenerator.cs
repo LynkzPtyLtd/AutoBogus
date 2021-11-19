@@ -1,4 +1,4 @@
-﻿namespace AutoBogus
+namespace AutoBogus
 {
   internal interface IAutoGenerator
   {

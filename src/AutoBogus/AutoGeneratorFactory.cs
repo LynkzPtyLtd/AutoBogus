@@ -9,7 +9,7 @@ namespace AutoBogus
 {
   internal static class AutoGeneratorFactory
   {
-    internal static IDictionary<Type, IAutoGenerator> Generators = new Dictionary<Type, IAutoGenerator>
+    internal static readonly IDictionary<Type, IAutoGenerator> Generators = new Dictionary<Type, IAutoGenerator>
     {
       {typeof(bool), new BoolGenerator()},
       {typeof(byte), new ByteGenerator()},

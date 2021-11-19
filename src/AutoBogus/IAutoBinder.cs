@@ -1,3 +1,4 @@
+using System;
 using Bogus;
 using System.Collections.Generic;
 using System.Reflection;
@@ -19,6 +20,13 @@ namespace AutoBogus
     TType CreateInstance<TType>(AutoGenerateContext context);
 
     /// <summary>
+    /// Creates an instance of <typeparamref name="TType"/>.
+    /// </summary>
+    /// <param name="context">The <see cref="AutoGenerateContext"/> instance for the generate request.</param>
+    /// <returns>The created instance.</returns>
+    object CreateInstance(Type type, AutoGenerateContext context);
+
+    /// <summary>
     /// Populates the provided instance with generated values.
     /// </summary>
     /// <typeparam name="TType">The type of instance to populate.</typeparam>
@@ -30,5 +38,17 @@ namespace AutoBogus
     /// values are applied to the provided instance and not a copy.
     /// </remarks>
     void PopulateInstance<TType>(object instance, AutoGenerateContext context, IEnumerable<MemberInfo> members = null);
+
+    /// <summary>
+    /// Populates the provided instance with generated values.
+    /// </summary>
+    /// <param name="instance">The instance to populate.</param>
+    /// <param name="context">The <see cref="AutoGenerateContext"/> instance for the generate request.</param>
+    /// <param name="members">An optional collection of members to populate. If null, all writable instance members are populated.</param>
+    /// <remarks>
+    /// Due to the boxing nature of value types, the <paramref name="instance"/> parameter is an object. This means the populated
+    /// values are applied to the provided instance and not a copy.
+    /// </remarks>
+    void PopulateInstance(object instance, AutoGenerateContext context, IEnumerable<MemberInfo> members = null);
   }
 }

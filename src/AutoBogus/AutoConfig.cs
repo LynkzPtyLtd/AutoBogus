@@ -40,6 +40,7 @@ namespace AutoBogus
       SkipTypes = config.SkipTypes.ToList();
       SkipPaths = config.SkipPaths.ToList();
       Overrides = config.Overrides.ToList();
+      Rules = config.Rules;
     }
 
     internal string Locale { get; set; }
@@ -52,5 +53,6 @@ namespace AutoBogus
     internal IList<string> SkipPaths { get; set; }
     internal IList<AutoGeneratorOverride> Overrides { get; set; }
     public Func<AutoGenerateContext, int?> TreeDepth { get; set; }
+    public IReadOnlyDictionary<Type, RuleBuilder> Rules { get; set; }
   }
 }

@@ -54,6 +54,11 @@ namespace AutoBogus
     /// </summary>
     public IEnumerable<string> RuleSets { get; internal set; }
 
+    /// <summary>
+    /// The set of AutoBogus rules for the generate request
+    /// </summary>
+    public IReadOnlyDictionary<Type, RuleBuilder> Rules => Config.Rules;
+
     internal IAutoBinder Binder => Config.Binder;
     internal IEnumerable<AutoGeneratorOverride> Overrides => Config.Overrides;
   }

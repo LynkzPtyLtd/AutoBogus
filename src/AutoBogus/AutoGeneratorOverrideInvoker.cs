@@ -28,7 +28,7 @@ namespace AutoBogus
 
         // Let each override apply updates to the instance
         generatorOverride.Generate(overrideContext);
-      }      
+      }
 
       return overrideContext.Instance;
     }
